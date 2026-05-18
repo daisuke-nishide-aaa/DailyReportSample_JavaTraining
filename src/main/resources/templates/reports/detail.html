@@ -25,6 +25,12 @@
                 <p>
                     作成者: <span th:text="${report.user.name}"></span>
                 </p>
+                <p th:if="${report.startTime != null}">
+                    出勤時刻: <span th:text="${#temporals.format(report.startTime, 'HH:mm')}"></span>
+                </p>
+                <p th:if="${report.endTime != null}">
+                    退勤時刻: <span th:text="${#temporals.format(report.endTime, 'HH:mm')}"></span>
+                </p>
             </div>
 
             <div class="report-content">

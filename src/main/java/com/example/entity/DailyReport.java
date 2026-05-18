@@ -16,6 +16,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -50,6 +51,14 @@ public class DailyReport {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "submission_date", nullable = false)
     private LocalDate submissionDate;
+
+    @DateTimeFormat(pattern = "HH:mm")
+    @Column(name = "start_time")
+    private LocalTime startTime;
+
+    @DateTimeFormat(pattern = "HH:mm")
+    @Column(name = "end_time")
+    private LocalTime endTime;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;

@@ -27,6 +27,16 @@
                 <input type="date" id="submissionDate" th:field="*{submissionDate}" class="form-control" required>
                 <span class="text-danger" th:if="${#fields.hasErrors('submissionDate')}" th:errors="*{submissionDate}"></span>
             </div>
+
+            <div class="form-group">
+                <label for="startTime">出勤時刻:</label>
+                <input type="time" id="startTime" th:field="*{startTime}" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="endTime">退勤時刻:</label>
+                <input type="time" id="endTime" th:field="*{endTime}" class="form-control">
+            </div>
             
             <div class="button-group">
                 <button type="submit" class="btn btn-primary">作成</button>

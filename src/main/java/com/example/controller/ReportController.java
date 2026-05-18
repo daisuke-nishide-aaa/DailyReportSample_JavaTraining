@@ -120,6 +120,8 @@ public class ReportController {
         existingReport.setTitle(report.getTitle());
         existingReport.setContent(report.getContent());
         existingReport.setSubmissionDate(report.getSubmissionDate());
+        existingReport.setStartTime(report.getStartTime());
+        existingReport.setEndTime(report.getEndTime());
         existingReport.setUpdatedAt(LocalDateTime.now());
 
         reportRepository.save(existingReport);
