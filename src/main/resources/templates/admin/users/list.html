@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ユーザー管理 - 日報管理システム</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h1>ユーザー管理</h1>
+
+        <div th:if="${successMessage}" class="alert alert-success">
+            <span th:text="${successMessage}"></span>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-danger">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <div class="button-group">
+            <a th:href="@{/admin/users/create}" class="btn btn-primary">新規登録</a>
+            <a th:href="@{/}" class="btn btn-secondary">戻る</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(users)}" class="text-center">
+            <p>ユーザーが存在しません。</p>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(users)}" class="user-list">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>氏名</th>
+                        <th>メールアドレス</th>
+                        <th>権限</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.role == 'ROLE_ADMIN'} ? '管理者' : '一般'"></td>
+                        <td>
+                            <form th:if="${user.role != 'ROLE_ADMIN'}" th:action="@{/admin/users/delete/{id}(id=${user.id})}" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('本当に削除しますか？')">削除</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
