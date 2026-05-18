@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>日報一覧 - 日報管理システム</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h1>日報一覧</h1>
+
+        <div th:if="${successMessage}" class="alert alert-success">
+            <span th:text="${successMessage}"></span>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-danger">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <div class="button-group">
+            <a th:href="@{/reports/create}" class="btn btn-primary">新規作成</a>
+            <a th:href="@{/}" class="btn btn-secondary">戻る</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(reports)}" class="text-center">
+            <p>日報がありません。</p>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(reports)}" class="report-list">
+            <div th:each="report : ${reports}" class="report-item">
+                <h3 th:text="${report.title}" class="report-title"></h3>
+                <div class="report-meta">
+                    <span th:text="${#temporals.format(report.submissionDate, 'yyyy/MM/dd')}"></span>
+                    <span class="report-author">作成者: <span th:text="${report.user.name}"></span></span>
+                </div>
+                <div class="button-group">
+                    <a th:href="@{/reports/{id}(id=${report.id})}" class="btn btn-primary">詳細</a>
+                    <div th:if="${#authentication.principal.username == report.user.email}" style="display: inline;">
+                        <a th:href="@{/reports/edit/{id}(id=${report.id})}" class="btn btn-primary">編集</a>
+                        <form th:action="@{/reports/delete/{id}(id=${report.id})}" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('本当に削除しますか？')">削除</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

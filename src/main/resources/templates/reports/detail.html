@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>日報詳細 - 日報管理システム</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h1>日報詳細</h1>
+
+        <div class="report-detail">
+            <div class="report-meta">
+                <p>
+                    提出日: <span th:text="${#temporals.format(report.submissionDate, 'yyyy/MM/dd')}"></span>
+                </p>
+                <p>
+                    作成者: <span th:text="${report.user.name}"></span>
+                </p>
+            </div>
+
+            <div class="report-content">
+                <h2 th:text="${report.title}" class="report-title"></h2>
+                <div class="report-body">
+                    <pre th:text="${report.content}" class="report-content-text"></pre>
+                </div>
+            </div>
+
+            <div class="report-timestamps">
+                <p>
+                    作成日時: <span th:text="${#temporals.format(report.createdAt, 'yyyy/MM/dd HH:mm')}"></span>
+                </p>
+                <p>
+                    更新日時: <span th:text="${#temporals.format(report.updatedAt, 'yyyy/MM/dd HH:mm')}"></span>
+                </p>
+            </div>
+
+            <div class="button-group">
+                <div th:if="${#authentication.principal.username == report.user.email}">
+                    <a th:href="@{/reports/edit/{id}(id=${report.id})}" class="btn btn-primary">編集</a>
+                    <form th:action="@{/reports/delete/{id}(id=${report.id})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('本当に削除しますか？')">削除</button>
+                    </form>
+                </div>
+                <a th:href="@{/reports}" class="btn btn-secondary">戻る</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
