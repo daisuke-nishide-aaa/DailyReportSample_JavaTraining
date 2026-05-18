@@ -1,0 +1,3 @@
+INSERT INTO users (name, email, password, postal_code, address, role, created_at, updated_at) VALUES
+     ('田中 太郎', 'user01@example.jp', '$2a$10$7NurUE4kK/xyWxlf2EA62.xu2LFYnZJDMBJR/Y.5IChJEzWrajNda', '100-0001', '東京都千代田区千代田1-1-1', 'ROLE_USER', '2024-10-16 16:15:14.778155', '2024-10-16 16:15:14.778155'),
+     ('高橋 一郎', 'admin01@example.jp', '$2a$10$rAtb4JMGYhJhFPCqqCZe9u56gdXSsVDF9gCtRThEva9jf6nwMRrUm', '100-0001', '東京都千代田区千代田1-1-1', 'ROLE_ADMIN', '2024-10-16 16:16:23.633987', '2024-10-16 16:16:23.633987');
