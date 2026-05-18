@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>日報管理システム</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h1>日報管理システム</h1>
+        
+        <div sec:authorize="!isAuthenticated()">
+            <p>日報管理システムへようこそ！</p>
+            <p>このシステムでは、日々の業務報告を簡単に管理することができます。</p>
+            <div class="button-group">
+                <a th:href="@{/auth/login}" class="btn btn-primary">ログイン</a>
+                <a th:href="@{/auth/register}" class="btn btn-primary">新規登録</a>
+            </div>
+        </div>
+        
+        <div sec:authorize="isAuthenticated()">
+            <p>
+                ようこそ、<span th:text="${userName}"></span>さん！
+            </p>
+            <div class="button-group">
+                <a th:href="@{/reports}" class="btn btn-primary">すべての日報</a>
+                <a th:href="@{/users/profile}" class="btn btn-primary">プロフィール</a>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-primary">ログアウト</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

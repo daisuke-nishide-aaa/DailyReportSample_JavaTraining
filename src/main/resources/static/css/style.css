@@ -1,0 +1,168 @@
+@charset "UTF-8";
+
+/* 全体のスタイル */
+body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 見出し */
+h1 {
+    color: #333;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* フォーム */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+/* ボタン */
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+}
+
+/* ボタングループ */
+.button-group {
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.button-group .btn {
+    margin: 0 0.5rem;
+}
+
+/* アラート */
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+.alert-success {
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+}
+
+.alert-danger {
+    background-color: #f2dede;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+}
+
+/* エラーメッセージ */
+.text-danger {
+    color: #dc3545;
+    font-size: 0.875rem;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+/* リンク */
+a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* マージン */
+.mt-3 {
+    margin-top: 1rem;
+}
+
+/* テキストの配置 */
+.text-center {
+    text-align: center;
+}
+
+/* 日報内容のスタイル */
+.report-content-text {
+    font-family: inherit;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: inherit;
+    line-height: 1.6;
+}
+
+/* テーブルのスタイル */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #dee2e6;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.table tbody tr:hover {
+    background-color: #f5f5f5;
+}
