@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>日報詳細 - 日報管理システム</title>
@@ -8,6 +9,13 @@
 <body>
     <div class="container">
         <h1>日報詳細</h1>
+
+        <div th:if="${successMessage}" class="alert alert-success">
+            <span th:text="${successMessage}"></span>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger">
+            <span th:text="${errorMessage}"></span>
+        </div>
 
         <div class="report-detail">
             <div class="report-meta">
@@ -43,6 +51,43 @@
                     </form>
                 </div>
                 <a th:href="@{/reports}" class="btn btn-secondary">戻る</a>
+            </div>
+        </div>
+
+        <!-- コメントセクション -->
+        <div class="comment-section">
+            <h2>コメント</h2>
+
+            <div th:if="${#lists.isEmpty(comments)}" class="comment-empty">
+                <p>コメントはまだありません。</p>
+            </div>
+
+            <div th:each="comment : ${comments}" class="comment-item">
+                <div class="comment-header">
+                    <span class="comment-author" th:text="${comment.user.name}"></span>
+                    <span class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy/MM/dd HH:mm')}"></span>
+                </div>
+                <div class="comment-body">
+                    <pre th:text="${comment.content}" class="comment-text"></pre>
+                </div>
+                <div class="comment-actions" sec:authorize="hasRole('ADMIN')">
+                    <form th:action="@{/admin/comments/delete/{id}(id=${comment.id})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('このコメントを削除しますか？')">削除</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- コメント投稿フォーム -->
+            <div class="comment-form">
+                <h3>コメントを投稿する</h3>
+                <form th:action="@{/comments/add/{reportId}(reportId=${report.id})}" method="post">
+                    <div class="form-group">
+                        <textarea name="content" class="form-control" rows="4" placeholder="コメントを入力してください" required></textarea>
+                    </div>
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">投稿する</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

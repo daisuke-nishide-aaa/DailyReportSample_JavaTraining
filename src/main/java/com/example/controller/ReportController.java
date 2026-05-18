@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.entity.DailyReport;
 import com.example.entity.User;
+import com.example.repository.CommentRepository;
 import com.example.repository.DailyReportRepository;
 import com.example.repository.UserRepository;
 
@@ -30,6 +31,9 @@ public class ReportController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @GetMapping
     public String list(@AuthenticationPrincipal UserDetails userDetails, Model model) {
@@ -69,7 +73,9 @@ public class ReportController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable Long id, Model model) {
-        model.addAttribute("report", reportRepository.findById(id).get());
+        DailyReport report = reportRepository.findById(id).get();
+        model.addAttribute("report", report);
+        model.addAttribute("comments", commentRepository.findByDailyReportOrderByCreatedAtAsc(report));
         return "reports/detail";
     }
 
