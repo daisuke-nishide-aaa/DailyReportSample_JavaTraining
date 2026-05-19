@@ -56,4 +56,29 @@ public class UserService {
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
+
+    public void register(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole("ROLE_USER");
+        LocalDateTime now = LocalDateTime.now();
+        user.setCreatedAt(now);
+        user.setUpdatedAt(now);
+        userRepository.save(user);
+    }
+
+    public User updateProfile(String currentEmail, User newData) {
+        User currentUser = userRepository.findByEmail(currentEmail).get();
+        currentUser.setName(newData.getName());
+        currentUser.setEmail(newData.getEmail());
+        currentUser.setPostalCode(newData.getPostalCode());
+        currentUser.setAddress(newData.getAddress());
+        currentUser.setUpdatedAt(LocalDateTime.now());
+
+        String newPassword = newData.getPassword();
+        if (newPassword != null && !newPassword.isEmpty()) {
+            currentUser.setPassword(passwordEncoder.encode(newPassword));
+        }
+
+        return userRepository.save(currentUser);
+    }
 }
