@@ -17,8 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.entity.DailyReport;
 import com.example.entity.User;
 import com.example.repository.CommentRepository;
-import com.example.repository.UserRepository;
 import com.example.service.ReportService;
+import com.example.service.UserService;
 
 @Controller
 @RequestMapping("/reports")
@@ -28,7 +28,7 @@ public class ReportController {
     private ReportService reportService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private CommentRepository commentRepository;
@@ -55,7 +55,7 @@ public class ReportController {
             return "reports/create";
         }
 
-        User user = userRepository.findByEmail(userDetails.getUsername()).get();
+        User user = userService.findByEmail(userDetails.getUsername());
         reportService.create(report, user);
         redirectAttributes.addFlashAttribute("successMessage", "日報を作成しました");
 
