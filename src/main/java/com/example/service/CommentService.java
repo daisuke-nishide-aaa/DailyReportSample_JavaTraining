@@ -47,4 +47,13 @@ public class CommentService {
 
         commentRepository.save(comment);
     }
+
+    @Transactional(readOnly = true)
+    public Comment findById(Long id) {
+        return commentRepository.findById(id).get();
+    }
+
+    public void deleteById(Long id) {
+        commentRepository.deleteById(id);
+    }
 }
