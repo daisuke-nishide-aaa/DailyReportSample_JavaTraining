@@ -1,0 +1,10 @@
+2026-05-20 17:10:41.950 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-20 17:11:09.327 [http-nio-8080-exec-6] INFO  c.e.aspect.ServiceLoggingAspect - [START] ReportService.findByUser - ログインユーザー=admin01@example.jp, 引数=[User{id=2, email=admin01@example.jp}, Page request [number: 0, size 5, sort: UNSORTED]]
+2026-05-20 17:11:09.358 [http-nio-8080-exec-6] INFO  c.e.aspect.ServiceLoggingAspect - [END]   ReportService.findByUser - 実行時間=29ms
+2026-05-20 17:11:09.541 [http-nio-8080-exec-8] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2026-05-20 17:12:16.365 [http-nio-8080-exec-1] INFO  c.e.aspect.ServiceLoggingAspect - [START] ReportService.findAll - ログインユーザー=admin01@example.jp, 引数=[Page request [number: 0, size 10, sort: UNSORTED]]
+2026-05-20 17:12:16.403 [http-nio-8080-exec-1] INFO  c.e.aspect.ServiceLoggingAspect - [END]   ReportService.findAll - 実行時間=38ms
+2026-05-20 17:12:27.668 [http-nio-8080-exec-3] INFO  c.e.aspect.ServiceLoggingAspect - [START] ReportService.findAll - ログインユーザー=admin01@example.jp, 引数=[Page request [number: 1, size 10, sort: UNSORTED]]
+2026-05-20 17:12:27.692 [http-nio-8080-exec-3] INFO  c.e.aspect.ServiceLoggingAspect - [END]   ReportService.findAll - 実行時間=24ms
+2026-05-20 17:12:31.828 [http-nio-8080-exec-5] INFO  c.e.aspect.ServiceLoggingAspect - [START] ReportService.findAll - ログインユーザー=admin01@example.jp, 引数=[Page request [number: 2, size 10, sort: UNSORTED]]
+2026-05-20 17:12:31.839 [http-nio-8080-exec-5] INFO  c.e.aspect.ServiceLoggingAspect - [END]   ReportService.findAll - 実行時間=11ms
