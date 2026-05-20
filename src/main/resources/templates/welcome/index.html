@@ -36,11 +36,11 @@
             <!-- ここからの内容を追加する -->
             <h2>自分の日報一覧</h2>
 
-            <div th:if="${#lists.isEmpty(reports)}" class="text-center">
+            <div th:if="${reports.isEmpty()}" class="text-center">
                 <p>日報がありません。</p>
             </div>
 
-            <div th:unless="${#lists.isEmpty(reports)}" class="report-list">
+            <div th:unless="${reports.isEmpty()}" class="report-list">
                 <div th:each="report : ${reports}" class="report-item">
                     <h3 th:text="${report.title}" class="report-title"></h3>
                     <div class="report-meta">
@@ -54,6 +54,16 @@
                         </form>
                     </div>
                 </div>
+            </div>
+
+            <div class="pagination">
+                <a th:if="${reports.hasPrevious()}"
+                   th:href="@{/(page=${reports.number - 1})}"
+                   class="btn btn-secondary">前へ</a>
+                <span th:text="${reports.number + 1} + ' / ' + ${reports.totalPages} + ' ページ'"></span>
+                <a th:if="${reports.hasNext()}"
+                   th:href="@{/(page=${reports.number + 1})}"
+                   class="btn btn-secondary">次へ</a>
             </div>
             <!-- ここまでの内容を追加する -->
         </div>

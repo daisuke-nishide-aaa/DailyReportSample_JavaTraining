@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.entity.DailyReport;
@@ -34,8 +36,8 @@ public class ReportController {
     private CommentService commentService;
 
     @GetMapping
-    public String list(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        model.addAttribute("reports", reportService.findAll());
+    public String list(@RequestParam(defaultValue = "0") int page, Model model) {
+        model.addAttribute("reports", reportService.findAll(PageRequest.of(page, 10)));
         return "reports/list";
     }
 
