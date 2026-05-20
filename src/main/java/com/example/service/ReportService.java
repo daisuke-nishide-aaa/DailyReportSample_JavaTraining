@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.entity.DailyReport;
 import com.example.entity.User;
+import com.example.exception.ResourceNotFoundException;
 import com.example.repository.DailyReportRepository;
 
 @Service                   // ← Service 層であることを Spring に伝える
@@ -27,7 +28,8 @@ public class ReportService {
     // ID で1件取得
     @Transactional(readOnly = true)
     public DailyReport findById(Long id) {
-        return reportRepository.findById(id).get();
+        return reportRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("日報が見つかりません。ID: " + id));
     }
 
     // 日報を新規作成
@@ -41,7 +43,8 @@ public class ReportService {
 
     // 日報を更新
     public void update(Long id, DailyReport newData) {
-        DailyReport existing = reportRepository.findById(id).get();
+        DailyReport existing = reportRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("日報が見つかりません。ID: " + id));
         existing.setTitle(newData.getTitle());
         existing.setContent(newData.getContent());
         existing.setSubmissionDate(newData.getSubmissionDate());
@@ -59,7 +62,8 @@ public class ReportService {
     // 投稿者本人かチェック
     @Transactional(readOnly = true)
     public boolean isOwner(Long reportId, String email) {
-        DailyReport report = reportRepository.findById(reportId).get();
+        DailyReport report = reportRepository.findById(reportId)
+                .orElseThrow(() -> new ResourceNotFoundException("日報が見つかりません。ID: " + reportId));
         return report.getUser().getEmail().equals(email);
     }
 }

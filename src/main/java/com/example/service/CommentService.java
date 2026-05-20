@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.entity.Comment;
 import com.example.entity.DailyReport;
 import com.example.entity.User;
+import com.example.exception.ResourceNotFoundException;
 import com.example.repository.CommentRepository;
 import com.example.repository.DailyReportRepository;
 import com.example.repository.UserRepository;
@@ -33,8 +34,10 @@ public class CommentService {
     }
 
     public void create(Long reportId, String email, String content) {
-        DailyReport report = reportRepository.findById(reportId).get();
-        User user = userRepository.findByEmail(email).get();
+        DailyReport report = reportRepository.findById(reportId)
+                .orElseThrow(() -> new ResourceNotFoundException("日報が見つかりません。ID: " + reportId));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("ユーザーが見つかりません。email: " + email));
 
         Comment comment = new Comment();
         comment.setDailyReport(report);

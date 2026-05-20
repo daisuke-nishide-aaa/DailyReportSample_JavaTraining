@@ -20,7 +20,8 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email).get();
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("ユーザーが見つかりません。email: " + email));
     }
 
     @Transactional(readOnly = true)
