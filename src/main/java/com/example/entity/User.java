@@ -15,6 +15,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import com.example.validation.group.OnCreate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,8 +41,8 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotBlank(message = "パスワードを入力してください")
-    @Size(min = 8, max = 100, message = "パスワードは8文字以上100文字以内で入力してください")
+    @NotBlank(message = "パスワードを入力してください", groups = OnCreate.class)
+    @Size(min = 8, max = 100, message = "パスワードは8文字以上100文字以内で入力してください", groups = OnCreate.class)
     @JsonIgnore
     @Column(nullable = false)
     private String password;

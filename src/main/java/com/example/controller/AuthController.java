@@ -14,6 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.entity.User;
 import com.example.repository.UserRepository;
+import com.example.validation.group.OnCreate;
+import jakarta.validation.groups.Default;
 
 import java.time.LocalDateTime;
 
@@ -38,7 +40,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@Validated @ModelAttribute("user") User user,
+    public String register(@Validated({Default.class, OnCreate.class}) @ModelAttribute("user") User user,
             BindingResult result,
             Model model,
             RedirectAttributes redirectAttributes) {

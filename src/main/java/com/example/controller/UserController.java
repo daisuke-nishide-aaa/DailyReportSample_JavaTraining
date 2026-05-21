@@ -24,6 +24,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.entity.User;
 import com.example.repository.UserRepository;
+import com.example.validation.group.OnUpdate;
+import jakarta.validation.groups.Default;
 
 import java.time.LocalDateTime;
 
@@ -56,27 +58,17 @@ public class UserController {
 
     @PostMapping("/profile/edit")
     public String updateProfile(@AuthenticationPrincipal UserDetails userDetails,
-            @Validated @ModelAttribute User user,
+            @Validated({Default.class, OnUpdate.class}) @ModelAttribute User user,
             BindingResult result,
             Model model,
             HttpServletRequest request,
             RedirectAttributes redirectAttributes) {
 
-        // ▼ ワークアラウンド ここから ▼
-        // 編集画面では「パスワード空欄＝変更しない」という仕様がある。
-        // しかし User エンティティの @NotBlank は登録・編集の両方に適用されるため、
-        // 空欄で送信すると @NotBlank に引っかかり更新できなくなってしまう。
-        //
-        // 本来はグループバリデーション（ステップ3）で解決するべき問題だが、
-        // ここでは暫定的に「パスワード以外にエラーがある場合のみ弾く」ことで対処する。
-        boolean passwordLeftBlank = user.getPassword() == null || user.getPassword().isBlank();
-        boolean hasNonPasswordErrors = result.getFieldErrors().stream()
-                .anyMatch(e -> !e.getField().equals("password"));
-
-        if (hasNonPasswordErrors || (!passwordLeftBlank && result.hasFieldErrors("password"))) {
+        // OnUpdate グループには password の @NotBlank / @Size が含まれないため、
+        // 空欄で送信してもエラーにならない。ワークアラウンドが不要になった。
+        if (result.hasErrors()) {
             return "users/edit";
         }
-        // ▲ ワークアラウンド ここまで ▲
 
         User currentUser = userRepository.findByEmail(userDetails.getUsername()).get();
 
