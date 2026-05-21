@@ -86,9 +86,14 @@
             <!-- コメント投稿フォーム -->
             <div class="comment-form">
                 <h3>コメントを投稿する</h3>
-                <form th:action="@{/comments/add/{reportId}(reportId=${report.id})}" method="post">
+                <form th:action="@{/comments/add/{reportId}(reportId=${report.id})}"
+                      th:object="${commentForm}" method="post">
                     <div class="form-group">
-                        <textarea name="content" class="form-control" rows="4" placeholder="コメントを入力してください" required></textarea>
+                        <textarea th:field="*{content}" class="form-control" rows="4"
+                                  placeholder="コメントを入力してください"></textarea>
+                        <span class="text-danger"
+                              th:if="${#fields.hasErrors('content')}"
+                              th:errors="*{content}"></span>
                     </div>
                     <div class="button-group">
                         <button type="submit" class="btn btn-primary">投稿する</button>

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.entity.DailyReport;
 import com.example.entity.User;
+import com.example.form.CommentForm;
 import com.example.service.CommentService;
 import com.example.service.ReportService;
 import com.example.service.UserService;
@@ -69,6 +70,8 @@ public class ReportController {
         DailyReport report = reportService.findById(id);
         model.addAttribute("report", report);
         model.addAttribute("comments", commentService.findByReport(report));
+        // コメントフォームのバリデーションエラー再表示に備えて空の DTO を渡す
+        model.addAttribute("commentForm", new CommentForm());
         return "reports/detail";
     }
 
