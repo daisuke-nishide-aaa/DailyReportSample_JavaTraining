@@ -16,29 +16,26 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.entity.DailyReport;
 import com.example.entity.User;
-import com.example.repository.CommentRepository;
-import com.example.repository.DailyReportRepository;
-import com.example.repository.UserRepository;
-
-import java.time.LocalDateTime;
+import com.example.service.CommentService;
+import com.example.service.ReportService;
+import com.example.service.UserService;
 
 @Controller
 @RequestMapping("/reports")
 public class ReportController {
 
     @Autowired
-    private DailyReportRepository reportRepository;
+    private ReportService reportService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    private CommentRepository commentRepository;
+    private CommentService commentService;
 
     @GetMapping
     public String list(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        // すべての日報を提出日の降順で取得
-        model.addAttribute("reports", reportRepository.findAllByOrderBySubmissionDateDesc());
+        model.addAttribute("reports", reportService.findAll());
         return "reports/list";
     }
 
@@ -58,14 +55,8 @@ public class ReportController {
             return "reports/create";
         }
 
-        User user = userRepository.findByEmail(userDetails.getUsername()).get();
-        report.setUser(user);
-
-        LocalDateTime now = LocalDateTime.now();
-        report.setCreatedAt(now);
-        report.setUpdatedAt(now);
-
-        reportRepository.save(report);
+        User user = userService.findByEmail(userDetails.getUsername());
+        reportService.create(report, user);
         redirectAttributes.addFlashAttribute("successMessage", "日報を作成しました");
 
         return "redirect:/reports";
@@ -73,9 +64,9 @@ public class ReportController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable Long id, Model model) {
-        DailyReport report = reportRepository.findById(id).get();
+        DailyReport report = reportService.findById(id);
         model.addAttribute("report", report);
-        model.addAttribute("comments", commentRepository.findByDailyReportOrderByCreatedAtAsc(report));
+        model.addAttribute("comments", commentService.findByReport(report));
         return "reports/detail";
     }
 
@@ -85,15 +76,12 @@ public class ReportController {
             Model model,
             RedirectAttributes redirectAttributes) {
         
-        DailyReport report = reportRepository.findById(id).get();
-        
-        // 投稿者本人でない場合は日報一覧にリダイレクト
-        if (!report.getUser().getEmail().equals(userDetails.getUsername())) {
+        if (!reportService.isOwner(id, userDetails.getUsername())) {
             redirectAttributes.addFlashAttribute("errorMessage", "他のユーザーの日報は編集できません。");
             return "redirect:/reports";
         }
-        
-        model.addAttribute("report", report);
+
+        model.addAttribute("report", reportService.findById(id));
         return "reports/edit";
     }
 
@@ -109,22 +97,12 @@ public class ReportController {
             return "reports/edit";
         }
 
-        DailyReport existingReport = reportRepository.findById(id).get();
-        
-        // 投稿者本人でない場合は日報一覧にリダイレクト
-        if (!existingReport.getUser().getEmail().equals(userDetails.getUsername())) {
+        if (!reportService.isOwner(id, userDetails.getUsername())) {
             redirectAttributes.addFlashAttribute("errorMessage", "他のユーザーの日報は編集できません。");
             return "redirect:/reports";
         }
 
-        existingReport.setTitle(report.getTitle());
-        existingReport.setContent(report.getContent());
-        existingReport.setSubmissionDate(report.getSubmissionDate());
-        existingReport.setStartTime(report.getStartTime());
-        existingReport.setEndTime(report.getEndTime());
-        existingReport.setUpdatedAt(LocalDateTime.now());
-
-        reportRepository.save(existingReport);
+        reportService.update(id, report);
         redirectAttributes.addFlashAttribute("successMessage", "日報を更新しました");
 
         return "redirect:/reports";
@@ -135,15 +113,12 @@ public class ReportController {
             @PathVariable Long id,
             RedirectAttributes redirectAttributes) {
         
-        DailyReport report = reportRepository.findById(id).get();
-        
-        // 投稿者本人でない場合は日報一覧にリダイレクト
-        if (!report.getUser().getEmail().equals(userDetails.getUsername())) {
+        if (!reportService.isOwner(id, userDetails.getUsername())) {
             redirectAttributes.addFlashAttribute("errorMessage", "他のユーザーの日報は削除できません。");
             return "redirect:/reports";
         }
-        
-        reportRepository.deleteById(id);
+
+        reportService.delete(id);
         redirectAttributes.addFlashAttribute("successMessage", "日報を削除しました");
         return "redirect:/reports";
     }

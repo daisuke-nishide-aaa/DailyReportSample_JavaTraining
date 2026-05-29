@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.entity.Comment;
-import com.example.repository.CommentRepository;
+import com.example.service.CommentService;
 
 @Controller
 @RequestMapping("/admin/comments")
@@ -17,14 +17,14 @@ import com.example.repository.CommentRepository;
 public class AdminCommentController {
 
     @Autowired
-    private CommentRepository commentRepository;
+    private CommentService commentService;
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        Comment comment = commentRepository.findById(id).get();
+        Comment comment = commentService.findById(id);
         Long reportId = comment.getDailyReport().getId();
 
-        commentRepository.deleteById(id);
+        commentService.deleteById(id);
         redirectAttributes.addFlashAttribute("successMessage", "コメントを削除しました。");
 
         return "redirect:/reports/" + reportId;
